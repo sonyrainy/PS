@@ -1,4 +1,3 @@
-
 #include <algorithm>
 #include <iostream>
 #include <queue>
@@ -8,50 +7,28 @@ using namespace std;
 
 const int MAX_N = 101;
 int h[MAX_N][MAX_N];
+int check[MAX_N][MAX_N] = {
+    0,
+};
 
+int dx[4] = {-1, 0, 1, 0};
+int dy[4] = {0, 1, 0, -1};
 vector<int> F;
+int n;
 
-int bfs(int i, int n) {
-  int dx[4] = {-1, 0, 1, 0};
-  int dy[4] = {0, 1, 0, -1};
-  int cnt = 0;
-  int check[MAX_N][MAX_N] = {
-      0,
-  };
-  queue<pair<int, int>> q;
-
-  for (int a = 1; a <= n; a++) {
-    for (int b = 1; b <= n; b++) {
-      // i보다 큰 곳에 있고, 방문한 적이 없는 곳일 때
-      // 영역의 시작 부분
-      if (h[a][b] > i && check[a][b] == 0) {
-        check[a][b] = ++cnt;
-        q.push({a, b});
-
-        while (!q.empty()) {
-          int x = q.front().first;
-          int y = q.front().second;
-          q.pop();
-          for (int k = 0; k < 4; k++) {
-            int xx = x + dx[k];
-            int yy = y + dy[k];
-
-            if (xx < 1 || xx > n || yy < 1 || yy > n) {
-              continue;
-            }
-            if (h[xx][yy] > i && check[xx][yy] == 0) {
-              q.push({xx, yy});
-              check[xx][yy] = cnt;
-              // 중복 메모리 초과 주의
-              // queue에 넣으며 동시에 방문 여부를 체크하는게 국룰
-            }
-          }
-        }
-      }
+// i보다 지대가 높아야 안전지대, n은 지역 가로세로
+void dfs(int i, int a, int b) {
+  check[a][b] = 1;
+  for (int k = 0; k < 4; k++) {
+    int xx = a + dx[k];
+    int yy = b + dy[k];
+    if (xx < 1 || xx > n || yy < 1 || yy > n) {
+      continue;
+    }
+    if (h[xx][yy] > i && check[xx][yy] == 0) {
+      dfs(i, xx, yy);
     }
   }
-
-  return cnt;
 }
 
 int main() {
@@ -59,7 +36,6 @@ int main() {
   cin.tie(NULL);
   cout.tie(NULL);
 
-  int n;
   cin >> n;
 
   for (int i = 1; i <= n; i++) {
@@ -69,7 +45,19 @@ int main() {
   }
 
   for (int i = 1; i <= 100; i++) {
-    F.push_back(bfs(i, n));
+    fill(&check[0][0], &check[0][0] + MAX_N * MAX_N, 0);
+    int cnt = 0;
+    for (int a = 1; a <= n; a++) {
+      for (int b = 1; b <= n; b++) {
+        if (h[a][b] > i && check[a][b] == 0) {
+          dfs(i, a, b);
+          cnt++;
+          // dfs를 쓰고, cnt를 누적.
+        }
+      }
+    }
+    F.push_back(cnt);
+    // max_safe_zone = max(max_safe_zone, cnt);
   }
 
   if (*max_element(F.begin(), F.end()) == 0) {
@@ -77,6 +65,5 @@ int main() {
   } else {
     cout << *max_element(F.begin(), F.end());
   }
-
   return 0;
 }
