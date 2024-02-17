@@ -1,9 +1,3 @@
-// days 2차원 배열을 써서 가장 최대값을 넣으려고 했음.
-//근데 bfs 쓰면 그냥 바로 최소값이 나온다는 것을 알음.
-//걍 count로 하면 될 것 같다는 생각.
-
-//+ 검색) 그냥 box에다가 바로 날짜를 넣어가면
-//되네
 
 #include <algorithm>
 #include <iostream>
@@ -48,7 +42,7 @@ int bfs(int i, int n) {
             if (h[xx][yy] > i && check[xx][yy] == 0) {
               q.push({xx, yy});
               check[xx][yy] = cnt;
-              //중복 메모리 초과 주의
+              // 중복 메모리 초과 주의
               // queue에 넣으며 동시에 방문 여부를 체크하는게 국룰
             }
           }
