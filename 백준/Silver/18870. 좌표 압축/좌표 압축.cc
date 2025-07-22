@@ -1,11 +1,6 @@
-#include <algorithm>
-#include <iostream>
-#include <vector>
-using namespace std;
+#include <bits/stdc++.h>
 
-bool compare(pair<int, string> p1, pair<int, string> p2) {
-    return p1.first < p2.first; 
-}
+using namespace std;
 
 int main() {
     ios::sync_with_stdio(false);
@@ -15,16 +10,16 @@ int main() {
     int n;
     cin >> n;
     vector<int> a(n);
-    vector<int> c(n);
+    vector<int> uni(n);
     for (int i = 0; i < n; i++) {
         cin >> a[i];
-        c[i] = a[i];
+        uni[i] = a[i];
 
     }
-    sort(c.begin(), c.end());
-    c.erase(unique(c.begin(), c.end()), c.end());
+    sort(uni.begin(), uni.end());
+    uni.erase(unique(uni.begin(), uni.end()), uni.end());
     for (int i =0; i < a.size(); i++) {
-        cout << lower_bound(c.begin(), c.end(), a[i]) - c.begin() << " ";
+        cout << lower_bound(uni.begin(), uni.end(), a[i]) - uni.begin() << " ";
     }
 
     return 0;
