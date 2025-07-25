@@ -1,45 +1,44 @@
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-bool visited[1001];
-vector<int> graph[1001];
+int n, m;
 
-void dfs(int x)
-{
-    // 방문한 경우, visited 배열의 항을 true로 변환
-    visited[x] = true;
+vector<int> vec[1005];
+bool visited[1005];
+int cnt = 0;
 
-    // 인접한 노드의 사이즈만큼 탐색
-    // 하지만 dfs의 원래 구조인 stack의 특징(LIFO)을
-    // 생각하여 graph[x]의 뒤에서부터 탐색해보았다.
-    for (int i = graph[x].size()-1; i >=0; i--) 
-    {
-        int y = graph[x][i];
+void DFS(int node) {
+	visited[node] = true;
+	for (int k : vec[node]) {
+		if (visited[k]) continue;
+		DFS(k);
+	}
 
-        // 방문하지 않았던 경우라면, 아래 코드 실행
-        if (!visited[y]) 
-            dfs(y);
-    }
 }
 
-int main(void)
-{
-    int u, v, N, M;
-    int count = 0;
-    cin >> N >> M;
-    for (int i = 0; i < M; i++) {
-        cin >> u >> v;
-        graph[u].push_back(v);
-        graph[v].push_back(u);
-    }
-    for (int i = 1; i <= N; i++) {
-        if (visited[i] == false) {
-            count++;
-            dfs(i);
-        }
-    }
-    cout << count << "\n";
+int main() {
 
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	cin >> n >> m;
+
+	for (int i = 0; i < m; ++i) {
+		int u, v;
+		cin >> u >> v;
+		vec[u].push_back(v);
+		vec[v].push_back(u);
+	}
+
+	for (int i = 1; i <= n; ++i) {
+		if (visited[i]) continue;
+		DFS(i);
+		++cnt;
+	
+
+	}
+	cout << cnt;
+
+
+	return 0;
 }
