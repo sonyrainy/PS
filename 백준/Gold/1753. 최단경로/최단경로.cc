@@ -14,16 +14,18 @@ vector<pair<int, int>> a[300001];
 vector<int> d(20001);
 
 // 다익스트라 실행 함수
-void dijkstra(int startN) {
+void dijkstra(int startIndex) {
 
     // 시작점에서 시작점으로의 최소 거리는 0
-    d[startN] = 0;
+    d[startIndex] = 0;
 
     // min heap 구조, 더 작은 값을 기준으로 최상단 노드를 만들도록 한다.
     priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
 
     // 출발 노드의 정보를 우선순위 큐에 넣는다.
-    pq.push(make_pair(0, startN));
+    pq.push(make_pair(0, startIndex)); 
+    // 우선순위 큐는 first 값을 기준 정렬되므로, 위와 같이 수정한다.
+    
     while (pq.empty()==false) {
 
         // 기준 점부터 가장 최소 거리 노드의 index
@@ -36,7 +38,9 @@ void dijkstra(int startN) {
         // 최단 거리가 아닌 경우 스킵
         if (d[current] < distance) continue;
 
-        for (int i = 0; i < a[current].size(); i++) {
+		// pq 내부에 여러 개가 들어가도록 하고, 위 코드에서 가장 최소에 대한 값을
+		// distance, current에 넣는다.
+        for (int i = 0; i < a[current].size(); i++) { 
 
             // 선택된 노드의 인적노드
             int nextIndex = a[current][i].first;
@@ -52,7 +56,6 @@ void dijkstra(int startN) {
                 pq.push(make_pair(nextDistance, nextIndex));
             }
         }
-
     }
 }
 int main() {
