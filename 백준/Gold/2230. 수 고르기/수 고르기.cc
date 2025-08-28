@@ -3,34 +3,27 @@
 using namespace std;
 
 
-int minV = 2147000000;
 
 int main() {
 
 	ios::sync_with_stdio(false);
 	cin.tie(nullptr);
-
-
 	int n, m;
+	int minV = 2147000000;
+
 	cin >> n >> m;
-	
 	vector<int> a(n);
+
 	for (int i = 0; i < n; ++i) cin >> a[i];
-
-
-
 	sort(a.begin(), a.end());
-
-
-	for (int i = 0;i<n;++i)
-	{
-		auto it = lower_bound(a.begin() + i, a.end(), a[i] + m);
-		if (it == a.end()) continue;
-		if(minV>*it-a[i]){
-			minV = *it - a[i];
-		}
+	int en = 0;
+	for (int st = 0; st < n; ++st) {
+		while (en < n && a[en] - a[st] < m) ++en;
+		if (en == n) break;
+		minV = min(minV, a[en] - a[st]);
 	}
-
 	cout << minV;
+
+
 	return 0;
 }
